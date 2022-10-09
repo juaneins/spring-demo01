@@ -1,5 +1,7 @@
 package com.fundamentos.springboot.springdemo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +16,7 @@ import com.fundamentos.springboot.springdemo.pojo.User;
 @SpringBootApplication
 public class SpringDemoApplication implements CommandLineRunner {
 	
+	private final Log logger = LogFactory.getLog(SpringApplication.class);
 	private ComponentDependency componentDependency;
 	private MyBean myBean;
 	private MyBeanWithDependency myBeanWithDependency;
@@ -42,6 +45,7 @@ public class SpringDemoApplication implements CommandLineRunner {
 		String result = myBeanWithProperties.function();
 		System.out.println(result);
 		System.out.println(user.toString());
+		logger.error("This is an error!!");
 	}
 
 }
