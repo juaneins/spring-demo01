@@ -11,7 +11,7 @@ import com.fundamentos.springboot.springdemo.bean.MyBean;
 import com.fundamentos.springboot.springdemo.bean.MyBeanWithDependency;
 import com.fundamentos.springboot.springdemo.bean.MyBeanWithProperties;
 import com.fundamentos.springboot.springdemo.component.ComponentDependency;
-import com.fundamentos.springboot.springdemo.pojo.User;
+import com.fundamentos.springboot.springdemo.pojo.UserPojo;
 
 @SpringBootApplication
 public class SpringDemoApplication implements CommandLineRunner {
@@ -21,11 +21,11 @@ public class SpringDemoApplication implements CommandLineRunner {
 	private MyBean myBean;
 	private MyBeanWithDependency myBeanWithDependency;
 	private MyBeanWithProperties myBeanWithProperties;
-	private User user;
+	private UserPojo user;
 	
 	public SpringDemoApplication(@Qualifier("componentImplement2") ComponentDependency componentDependency,
 			MyBean myBean, MyBeanWithDependency myBeanWithDependency,
-			MyBeanWithProperties myBeanWithProperties, User user) {
+			MyBeanWithProperties myBeanWithProperties, UserPojo user) {
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;

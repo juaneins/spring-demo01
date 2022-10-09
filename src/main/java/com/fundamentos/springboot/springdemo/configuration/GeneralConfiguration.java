@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fundamentos.springboot.springdemo.bean.MyBeanWithProperties;
 import com.fundamentos.springboot.springdemo.bean.MyBeanWithPropertiesImplement;
-import com.fundamentos.springboot.springdemo.pojo.User;
+import com.fundamentos.springboot.springdemo.pojo.UserPojo;
 
 /**
  * @author juaneins_uio
  *
  */
 @Configuration
-@EnableConfigurationProperties(User.class)
+@EnableConfigurationProperties(UserPojo.class)
 public class GeneralConfiguration {
 	
 	@Value("${value.name}")
