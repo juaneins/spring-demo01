@@ -77,7 +77,8 @@ public class SpringDemoApplication implements CommandLineRunner {
 		User user7 = new User("Enrique", "enrique@domain.com", LocalDate.of(1983, 11, 12));
 		User user8 = new User("Luis", "luis@domain.com", LocalDate.of(1983, 2, 27));
 		User user9 = new User("Paola", "paola@domain.com", LocalDate.of(1983, 4, 10));
-		List<User> list = Arrays.asList(user1, user2, user3, user4, user5, user6, user7, user8, user9);
+		User user10 = new User("Karen", "karen2@domain.com", LocalDate.of(1983, 11, 21));
+		List<User> list = Arrays.asList(user1, user2, user3, user4, user5, user6, user7, user8, user9,user10);
 		// userRepository.saveAll(list);
 		list.stream().forEach(userRepository::save);
 	}
@@ -89,6 +90,10 @@ public class SpringDemoApplication implements CommandLineRunner {
 				.orElseThrow(() -> new RuntimeException("User not found")));
 		userRepository.findAndSort("Mar", Sort.by("birthDate").ascending()).stream()
 				.forEach(user -> logger.info("Usuario con metodo sort: " + user));
+		
+		userRepository.findByName("Karen").stream().forEach(user -> logger.info("Find by name user: " + user));
+		userRepository.findByNameAndEmail("Karen", "karen2@domain.com").forEach(user -> logger.info("Find by email and name user: " + user));
+		
 		
 	}
 }
