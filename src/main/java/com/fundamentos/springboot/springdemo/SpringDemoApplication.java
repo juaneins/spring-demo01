@@ -69,15 +69,15 @@ public class SpringDemoApplication implements CommandLineRunner {
 
 	private void saveUserInDatabase() {
 		User user1 = new User("John", "john@domain.com", LocalDate.of(1983, 3, 13));
-		User user2 = new User("Marco", "marco@domain.com", LocalDate.of(1983, 12, 8));
-		User user3 = new User("Daniela", "daniela@domain.com", LocalDate.of(1983, 9, 8));
-		User user4 = new User("Marisol", "marisol@domain.com", LocalDate.of(1983, 6, 18));
-		User user5 = new User("Karen", "karen@domain.com", LocalDate.of(1983, 1, 1));
-		User user6 = new User("Carlos", "carlos@domain.com", LocalDate.of(1983, 7, 7));
-		User user7 = new User("Enrique", "enrique@domain.com", LocalDate.of(1983, 11, 12));
-		User user8 = new User("Luis", "luis@domain.com", LocalDate.of(1983, 2, 27));
-		User user9 = new User("Paola", "paola@domain.com", LocalDate.of(1983, 4, 10));
-		User user10 = new User("Karen", "karen2@domain.com", LocalDate.of(1983, 11, 21));
+		User user2 = new User("Marco", "marco@domain.com", LocalDate.of(1980, 12, 8));
+		User user3 = new User("Daniela", "daniela@domain.com", LocalDate.of(1993, 9, 8));
+		User user4 = new User("Marisol", "marisol@domain.com", LocalDate.of(1978, 6, 18));
+		User user5 = new User("Karen", "karen@domain.com", LocalDate.of(1996, 1, 1));
+		User user6 = new User("Carlos", "carlos@domain.com", LocalDate.of(1999, 7, 7));
+		User user7 = new User("Enrique", "enrique@domain.com", LocalDate.of(2000, 11, 12));
+		User user8 = new User("Luis", "luis@domain.com", LocalDate.of(2001, 2, 27));
+		User user9 = new User("Paola", "paola@domain.com", LocalDate.of(1981, 4, 10));
+		User user10 = new User("Karolina", "karolina@domain.com", LocalDate.of(1979, 11, 21));
 		List<User> list = Arrays.asList(user1, user2, user3, user4, user5, user6, user7, user8, user9,user10);
 		// userRepository.saveAll(list);
 		list.stream().forEach(userRepository::save);
@@ -94,6 +94,25 @@ public class SpringDemoApplication implements CommandLineRunner {
 		userRepository.findByName("Karen").stream().forEach(user -> logger.info("Find by name user: " + user));
 		userRepository.findByNameAndEmail("Karen", "karen2@domain.com").forEach(user -> logger.info("Find by email and name user: " + user));
 		
+		userRepository.findByNameLike("%n%")
+		.stream()
+		.forEach(user -> logger.info("findBynameLike: " + user));
 		
+		userRepository.findByNameOrEmail("Marisol","karolina@domain.com")
+		.stream()
+		.forEach(user -> logger.info("findByNameOrEmail: " + user));
+		
+		userRepository
+				.findByBirthDateBetween(LocalDate.of(1978, Month.JANUARY, 6), LocalDate.of(1981, Month.DECEMBER, 31))
+				.stream().forEach(user -> logger.info("findByBirthDateBetween: " + user));
+		
+
+		userRepository.findByNameLikeOrderByIdDesc("%s%")
+		.stream()
+		.forEach(user -> logger.info("findByNameLikeOrderByIdDesc: " + user));
+		
+		userRepository.findByNameContainingOrderByIdAsc("o")
+		.stream()
+		.forEach(user -> logger.info("findByNameContainingOrderByIdAsc: " + user));
 	}
 }
