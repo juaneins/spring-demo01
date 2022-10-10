@@ -114,5 +114,8 @@ public class SpringDemoApplication implements CommandLineRunner {
 		userRepository.findByNameContainingOrderByIdAsc("o")
 		.stream()
 		.forEach(user -> logger.info("findByNameContainingOrderByIdAsc: " + user));
+		
+		logger.info("getAllByBirthDateAndEmail: " + userRepository.getAllByBirthDateAndEmail(LocalDate.of(1978, 6, 18),"marisol@domain.com")
+		.orElseThrow(() -> new RuntimeException("User not found ")));
 	}
 }

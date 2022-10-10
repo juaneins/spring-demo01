@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.fundamentos.springboot.springdemo.dto.UserDto;
 import com.fundamentos.springboot.springdemo.entity.User;
 
 @Repository
@@ -33,4 +35,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findByNameLikeOrderByIdDesc(String name);
 	
 	List<User> findByNameContainingOrderByIdAsc(String name);
+	
+	@Query("select new com.fundamentos.springboot.springdemo.dto.UserDto(u.id, u.name, u.birthDate) "
+			+ "from User u "
+			+ "where u.birthDate = :birthDayParam "
+			+ "and u.email = :emailParam")
+	Optional<UserDto> getAllByBirthDateAndEmail(@Param("birthDayParam") LocalDate birthDate, @Param("emailParam") String email);
 }
