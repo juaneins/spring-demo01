@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import com.fundamentos.springboot.springdemo.bean.MyBean;
 import com.fundamentos.springboot.springdemo.bean.MyBeanWithDependency;
@@ -50,6 +54,7 @@ public class SpringDemoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		pastExecutions();
 		saveUserInDatabase();
+		getInformationJpqlFromUser();
 	}
 
 	private void pastExecutions() {
@@ -75,5 +80,15 @@ public class SpringDemoApplication implements CommandLineRunner {
 		List<User> list = Arrays.asList(user1, user2, user3, user4, user5, user6, user7, user8, user9);
 		// userRepository.saveAll(list);
 		list.stream().forEach(userRepository::save);
+	}
+	
+	private void getInformationJpqlFromUser() {
+		/*Optional<User> findUser = userRepository.findByEmail("paola@domain.com");
+		logger.info("Found user by email: " + findUser.orElseThrow(()-> new RuntimeException("User not found")));*/
+		logger.info(userRepository.findByEmail("paola@domain.com")
+				.orElseThrow(() -> new RuntimeException("User not found")));
+		userRepository.findAndSort("Mar", Sort.by("birthDate").ascending()).stream()
+				.forEach(user -> logger.info("Usuario con metodo sort: " + user));
+		
 	}
 }
