@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 	
 	@Id
@@ -38,8 +38,7 @@ public class User {
 		
 	}
 	
-	public User(String name, String email, LocalDate birthDate) {
-		super();
+	public User(String name, String email, LocalDate birthDate) {		
 		this.name = name;
 		this.email = email;
 		this.birthDate = birthDate;
