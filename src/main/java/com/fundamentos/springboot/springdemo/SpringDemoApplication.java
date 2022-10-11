@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,9 +124,14 @@ public class SpringDemoApplication implements CommandLineRunner {
 		User user1 = new User("John Transaction1", "transaction1@domain.com", LocalDate.of(1983, 3, 13));
 		User user2 = new User("Marco Transaction2", "transaction2@domain.com", LocalDate.of(1980, 12, 8));
 		User user3 = new User("Daniela Transaction3", "transaction3@domain.com", LocalDate.of(1993, 9, 8));
-		User user4 = new User("Daniela Transaction4", "transaction4@domain.com", LocalDate.of(2001, 5, 8));
+		User user4 = new User("Daniela Transaction4", "transaction3@domain.com", LocalDate.of(2001, 5, 8));
 		List<User> users = Arrays.asList(user1, user2, user3, user4);
-		userService.saveTransactional(users);
+		try {
+			userService.saveTransactional(users);
+			
+		} catch (Exception e) {
+			logger.error("Error insert values: " + e);
+		}
 		userService.getAllUsers().stream().forEach(user -> logger.info("Select new transactional users: " + user));
 	}
 }
