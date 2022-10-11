@@ -23,6 +23,7 @@ import com.fundamentos.springboot.springdemo.component.ComponentDependency;
 import com.fundamentos.springboot.springdemo.entity.User;
 import com.fundamentos.springboot.springdemo.pojo.UserPojo;
 import com.fundamentos.springboot.springdemo.repository.UserRepository;
+import com.fundamentos.springboot.springdemo.service.UserService;
 
 @SpringBootApplication
 public class SpringDemoApplication implements CommandLineRunner {
@@ -34,16 +35,18 @@ public class SpringDemoApplication implements CommandLineRunner {
 	private MyBeanWithProperties myBeanWithProperties;
 	private UserPojo userPojo;
 	private UserRepository userRepository;
+	private UserService userService;
 
 	public SpringDemoApplication(@Qualifier("componentImplement2") ComponentDependency componentDependency,
 			MyBean myBean, MyBeanWithDependency myBeanWithDependency, MyBeanWithProperties myBeanWithProperties,
-			UserPojo userPojo, UserRepository userRepository) {
+			UserPojo userPojo, UserRepository userRepository, UserService userService) {
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;
 		this.myBeanWithProperties = myBeanWithProperties;
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	public static void main(String[] args) {
@@ -55,6 +58,7 @@ public class SpringDemoApplication implements CommandLineRunner {
 		pastExecutions();
 		saveUserInDatabase();
 		getInformationJpqlFromUser();
+		saveWithErrorTransaction();
 	}
 
 	private void pastExecutions() {
@@ -117,5 +121,15 @@ public class SpringDemoApplication implements CommandLineRunner {
 		
 		logger.info("getAllByBirthDateAndEmail: " + userRepository.getAllByBirthDateAndEmail(LocalDate.of(1978, 6, 18),"marisol@domain.com")
 		.orElseThrow(() -> new RuntimeException("User not found ")));
+	}
+	
+	private void saveWithErrorTransaction() {
+		User user1 = new User("John Transaction1", "transaction1@domain.com", LocalDate.of(1983, 3, 13));
+		User user2 = new User("Marco Transaction2", "transaction2@domain.com", LocalDate.of(1980, 12, 8));
+		User user3 = new User("Daniela Transaction3", "transaction3@domain.com", LocalDate.of(1993, 9, 8));
+		User user4 = new User("Daniela Transaction4", "transaction4@domain.com", LocalDate.of(2001, 5, 8));
+		List<User> users = Arrays.asList(user1, user2, user3, user4);
+		userService.saveTransactional(users);
+		userService.getAllUsers().stream().forEach(user -> logger.info("Select new transactional users: " + user));
 	}
 }
